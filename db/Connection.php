@@ -3,10 +3,10 @@
 /**
  * Author: lukashjames@gmail.com 
  */
-namespace lukashjames\db-pgsql\db;
+namespace lukashjames\pgsql\db;
 
 use Yii;
-use lukashjames\db-pgsql\db\Command;
+use lukashjames\pgsql\db\Command;
 
 /**
  * This class extends \yii\db\Connection class

@@ -3,7 +3,7 @@
 /**
  * Author: lukashjames@gmail.com 
  */
-namespace lukashjames\db-pgsql\db;
+namespace lukashjames\pgsql\db;
 
 /**
  * This class extends \yii\db\Command class

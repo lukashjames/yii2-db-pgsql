@@ -18,8 +18,8 @@
     },
     "autoload": {
         "psr-4": {
-            "lukashjames\\db-pgsql\\": "",
-            "lukashjames\\db-pgsql\\db\\": "db/"
+            "lukashjames\\pgsql\\": "",
+            "lukashjames\\pgsql\\db\\": "db/"
         }
     }
 }

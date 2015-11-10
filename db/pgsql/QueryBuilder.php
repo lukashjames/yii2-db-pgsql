@@ -3,7 +3,7 @@
 /**
  * Author: lukashjames@gmail.com 
  */
-namespace lukashjames\db-pgsql\db\pgsql;
+namespace lukashjames\pgsql\db\pgsql;
 
 use yii\base\InvalidParamException;
 

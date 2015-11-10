@@ -9,7 +9,7 @@ echo "<?php\n";
 ?>
 
 use yii\db\Schema;
-use lukashjames\db-pgsql\db\Migration;
+use lukashjames\pgsql\db\Migration;
 
 class <?= $className ?> extends Migration
 {
