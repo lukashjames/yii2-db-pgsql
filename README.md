@@ -184,3 +184,11 @@ TODO
 <?php
 phpinfo();
 ```
+
+```javascript
+alert(777);
+```
+
+```sql
+CREATE TABLE t1 (id SERIAL PRIMARY KEY);
+```
