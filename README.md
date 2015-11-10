@@ -179,3 +179,8 @@ TODO
 * Add other database object for GRANT/REVOKE (sequence, function, language, tablespace, type).
 * Add separate privileges for concrete database object instead ALL PRIVILEGES (SELECT/INSERT/UPDATE/DELETE for tables, CREATE/USAGE for schemas, etc)
 * Something else
+
+```php
+<?php
+phpinfo();
+```
