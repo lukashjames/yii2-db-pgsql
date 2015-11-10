@@ -1,5 +1,5 @@
 {
-    "name": "lukashjames\yii2-db-pgsql",
+    "name": "lukashjames/yii2-db-pgsql",
     "type": "yii2-extension",
     "description": "Some extension for PostgreSQL",
     "keywords": ["pgsql","postgresql","db","yii2","extension"],
