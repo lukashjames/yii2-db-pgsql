@@ -25,7 +25,7 @@ class Connection extends \yii\db\Connection
     public function __construct()
     {
         // replace schemaMap for pgsql
-        $this->schemaMap['pgsql'] = 'app\db\pgsql\Schema';
+        $this->schemaMap['pgsql'] = 'lukashjames\pgsql\db\pgsql\Schema';
     }
     
     /**
