@@ -2,7 +2,7 @@
     "name": "lukashjames/yii2-db-pgsql",
     "type": "yii2-extension",
     "description": "Some extension for PostgreSQL",
-    "version": "v0.1.0-dev",
+    "version": "v0.1.0",
     "keywords": ["pgsql","postgresql","db","yii2","extension"],
     "homepage": "https://bitbucket.org/lukashjames/yii2-db-pgsql",
     "license": "MIT",
