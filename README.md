@@ -13,7 +13,7 @@ Features
 Installation
 ------------
 
-Put these line in your composer.json:
+Put these lines in your composer.json:
 
     "require-dev": {
         ...
