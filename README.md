@@ -15,30 +15,36 @@ Installation
 
 Put these lines in your composer.json:
 
-    "require-dev": {
-        ...
-        "lukashjames/yii2-db-pgsql": "*"
-    }
+```javascript
+"require-dev": {
+    ...
+    "lukashjames/yii2-db-pgsql": "*"
+}
+```
 
 Then execute
 
-    composer update -v
+```
+composer update -v
+```
 
 Configuration
 -------------
 
 For using in Yii2 migration tool, you need edit config/console.php:
 
-    'components' => [
-        ...
-        'dblocal' => [
-            //'class' => 'yii\db\Connection',
-            'class' => 'lukashjames\pgsql\db\Connection',
-            'dsn' => 'pgsql:host=localhost;port=5432;dbname=mydb',
-            'username' => 'postgres', // we need superuser for changing database structure
-            'password' => '', // trust connection from localhost, see pg_hba.conf
-            'charset' => 'utf8',
-        ],
+```php
+'components' => [
+    ...
+    'dblocal' => [
+        //'class' => 'yii\db\Connection',
+        'class' => 'lukashjames\pgsql\db\Connection',
+        'dsn' => 'pgsql:host=localhost;port=5432;dbname=mydb',
+        'username' => 'postgres', // we need superuser for changing database structure
+        'password' => '', // trust connection from localhost, see pg_hba.conf
+        'charset' => 'utf8',
+    ],
+```
 
 Using as migration tool
 -----------------------
