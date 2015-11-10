@@ -3,8 +3,7 @@
 /**
  * Author: lukashjames@gmail.com 
  */
-namespace lukashjames\yii2-db-pgsql\db\pgsql;
-//namespace pgsql_ext\db\pgsql;
+namespace lukashjames\db-pgsql\db\pgsql;
 
 /**
  * This class extends \yii\db\pgsql\Schema class

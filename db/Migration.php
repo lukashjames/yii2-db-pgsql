@@ -3,8 +3,7 @@
 /**
  * Author: lukashjames@gmail.com 2015
  */
-namespace lukashjames\yii2-db-pgsql\db;
-//namespace pgsql_ext\db;
+namespace lukashjames\db-pgsql\db;
 
 /**
  * This class extends \yii\db\Migration class

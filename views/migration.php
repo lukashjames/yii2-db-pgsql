@@ -9,8 +9,7 @@ echo "<?php\n";
 ?>
 
 use yii\db\Schema;
-use lukashjames\yii2-db-pgsql\db\Migration;
-//use pgsql_ext;
+use lukashjames\db-pgsql\db\Migration;
 
 class <?= $className ?> extends Migration
 {
