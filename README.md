@@ -51,133 +51,177 @@ Using as migration tool
 
 For creating new migration execute this console command:
 
-    yii migrate/create some_migration \
-        --migrationPath=./migrations \
-        --db=dblocal \
-        --templateFile=@vendor/lukashjames/yii2-db-pgsql/views/migration.php
+```
+yii migrate/create some_migration \
+    --migrationPath=./migrations \
+    --db=dblocal \
+    --templateFile=@vendor/lukashjames/yii2-db-pgsql/views/migration.php
+```
 
 It generates this migration file
 
-    <?php
-    use yii\db\Schema;
-    use lukashjames\pgsql\db\Migration;
+```php
+<?php
+use yii\db\Schema;
+use lukashjames\pgsql\db\Migration;
 
-    class m151110_082802_some_migration extends Migration
+class m151110_082802_some_migration extends Migration
+{
+    public function up()
     {
-        public function up()
-        {
 
-        }
-
-        public function down()
-        {
-            echo "m151110_082802_some_migration cannot be reverted.\n";
-            return false;
-        }
-        /*
-        // Use safeUp/safeDown to run migration code within a transaction
-        public function safeUp()
-        {
-        }
-
-        public function safeDown()
-        {
-        }
-        */
     }
+
+    public function down()
+    {
+        echo "m151110_082802_some_migration cannot be reverted.\n";
+        return false;
+    }
+    /*
+    // Use safeUp/safeDown to run migration code within a transaction
+    public function safeUp()
+    {
+    }
+
+    public function safeDown()
+    {
+    }
+    */
+}
+```
 
 Methods
 -------
 
 **createSchema()**
 
-    public function createSchema($schema, $owner = null)
+```php
+public function createSchema($schema, $owner = null)
+```
 
 Method for creating new schema.
 
 *Example 1:*
 
-    $this->createSchema('new_schema');
+```php
+$this->createSchema('new_schema');
+```
 
 Generates SQL statement
 
-    CREATE SCHEMA IF NOT EXISTS new_schema
+```sql
+CREATE SCHEMA IF NOT EXISTS new_schema
+```
 
 *Example 2*
 
-    $this->createSchema('other_schema', 'stat1');
+```php
+$this->createSchema('other_schema', 'stat1');
+```
     
 Generates SQL statement
 
-    CREATE SCHEMA IF NOT EXISTS other_schema AUTHORIZATION stat1
+```sql
+CREATE SCHEMA IF NOT EXISTS other_schema AUTHORIZATION stat1
+```
     
 Role stat1 must be exists in database.
 
 **dropSchema()**
 
-    public function dropSchema($schema, $cascade = false)
+```php
+public function dropSchema($schema, $cascade = false)
+```
 
 Method for removing schema.
 
 *Example 1*
 
-    $this->dropSchema('new_schema');
+```php
+$this->dropSchema('new_schema');
+```
     
 Generates SQL statement
     
-    DROP SCHEMA IF EXISTS new_schema
+```sql
+DROP SCHEMA IF EXISTS new_schema
+```
         
 *Example 2*
 
-    $this->dropSchema('new_schema', true);
+```php
+$this->dropSchema('new_schema', true);
+```
 
 Generates SQL statement
 
-    DROP SCHEMA IF EXISTS new_schema CASCADE
+```sql
+DROP SCHEMA IF EXISTS new_schema CASCADE
+```
     
 **grant()**
 
-    public function grant($target_name, $role, $target_type = 'table')
+```php
+public function grant($target_name, $role, $target_type = 'table')
+```
 
 Give all privileges on database object (schema, table, sequence, etc) to existing role.
 
 *Example 1*
 
-    $this->grant('some_table', 'stat1', 'table');
+```php
+$this->grant('some_table', 'stat1', 'table');
+```
     
 Generate SQL statement
 
-    GRANT ALL PRIVILEGES ON TABLE some_table TO stat1
+```sql
+GRANT ALL PRIVILEGES ON TABLE some_table TO stat1
+```
 
 *Example 2*
 
-    $this->grant('some_schema', 'stat1', 'schema');
+```php
+$this->grant('some_schema', 'stat1', 'schema');
+```
     
 Generates SQL statement
 
-    GRANT ALL PRIVILEGES ON SCHEMA some_schema TO stat1
+```sql
+GRANT ALL PRIVILEGES ON SCHEMA some_schema TO stat1
+```
 
 **revoke()**
 
-    public function revoke($target_name, $role, $target_type = 'table')
+```php
+public function revoke($target_name, $role, $target_type = 'table')
+```
 
 Remove all privileges on database object (schema, table, sequence, etc) from existing role.
 
 *Example 1*
 
-    $this->revoke('some_table', 'stat1', 'table');
+```php
+$this->revoke('some_table', 'stat1', 'table');
+```
     
 Generate SQL statement
 
-    REVOKE ALL PRIVILEGES ON TABLE some_table FROM stat1
+```sql
+REVOKE ALL PRIVILEGES ON TABLE some_table FROM stat1
+```
 
 *Example 2*
 
-    $this->revoke('some_schema', 'stat1', 'schema');
+```php
+$this->revoke('some_schema', 'stat1', 'schema');
+```
     
 Generates SQL statement
 
-    REVOKE ALL PRIVILEGES ON SCHEMA some_schema FROM stat1
+```sql
+REVOKE ALL PRIVILEGES ON SCHEMA some_schema FROM stat1
+```
     
 TODO
 ----
@@ -185,16 +229,3 @@ TODO
 * Add other database object for GRANT/REVOKE (sequence, function, language, tablespace, type).
 * Add separate privileges for concrete database object instead ALL PRIVILEGES (SELECT/INSERT/UPDATE/DELETE for tables, CREATE/USAGE for schemas, etc)
 * Something else
-
-```php
-<?php
-phpinfo();
-```
-
-```javascript
-alert(777);
-```
-
-```sql
-CREATE TABLE t1 (id SERIAL PRIMARY KEY);
-```
