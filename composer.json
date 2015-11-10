@@ -18,7 +18,8 @@
     },
     "autoload": {
         "psr-4": {
-            "lukashjames\\yii2-db-pgsql\\": ""
+            "lukashjames\\yii2-db-pgsql\\": "",
+            "lukashjames\\yii2-db-pgsql\\db\\": "db/"
         }
     }
 }
