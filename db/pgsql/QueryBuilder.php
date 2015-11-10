@@ -53,7 +53,7 @@ class QueryBuilder extends \yii\db\pgsql\QueryBuilder
      */
     public function createSchema($name, $owner = null)
     {
-        $sql = 'CREATE SCHEMA ' . $this->db->quoteTableName($name);
+        $sql = 'CREATE SCHEMA IF NOT EXISTS ' . $this->db->quoteTableName($name);
         if (!empty($owner)) {
             $sql .= ' AUTHORIZATION ' . $owner;
         }
@@ -70,7 +70,7 @@ class QueryBuilder extends \yii\db\pgsql\QueryBuilder
      */
     public function dropSchema($name, $cascade = false)
     {
-        $sql = 'DROP SCHEMA ' . $this->db->quoteTableName($name);
+        $sql = 'DROP SCHEMA IF EXISTS ' . $this->db->quoteTableName($name);
         if ($cascade === true) {
             $sql .= ' CASCADE';
         }
