@@ -22,8 +22,13 @@ class QueryBuilder extends \yii\db\pgsql\QueryBuilder
      * @access private
      */
     private $_grant_types = [
-        'table' => ['sql' => 'TABLE'],
-        'schema' => ['sql' => 'SCHEMA'],
+        'table' => ['sql' => 'TABLE', 'privileges' => ['SELECT', 'INSERT', 'UPDATE', 'DELETE']],
+        'schema' => ['sql' => 'SCHEMA', 'privileges' => ['CREATE', 'USAGE']],
+        'sequence' => ['sql' => 'SEQUENCE', 'privileges' => ['USAGE', 'SELECT', 'UPDATE']],
+        'function' => ['sql' => 'FUNCTION', 'privileges' => ['EXECUTE']],
+        'language' => ['sql'=> 'LANGUAGE', 'privileges' => ['USAGE']],
+        'tablespace' => ['sql' => 'TABLESPACE', 'privileges' => ['CREATE']],
+        'type' => ['sql' => 'TYPE', 'privileges' => ['USAGE']],
     ];
 
     /**
