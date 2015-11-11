@@ -16,15 +16,22 @@ use yii\base\InvalidParamException;
 class QueryBuilder extends \yii\db\pgsql\QueryBuilder
 {
     /**
-     * Supported types for GRANT/REVOKE 
+     * Supported privileges for GRANT/REVOKE 
      * 
-     * @var mixed
+     * @var array
      * @access private
      */
-    private $_grant_types = [
-        'table' => ['sql' => 'TABLE'],
-        'schema' => ['sql' => 'SCHEMA'],
+    private $_grant_privileges = [
+        'TABLE'      => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+        'SCHEMA'     => ['CREATE', 'USAGE'],
+        'SEQUENCE'   => ['USAGE', 'SELECT', 'UPDATE'],
+        'FUNCTION'   => ['EXECUTE'],
+        'LANGUAGE'   => ['USAGE'],
+        'TABLESPACE' => ['CREATE'],
+        'TYPE'       => ['USAGE'],
     ];
+    
+    private $_failed_privilege;
 
     /**
      * Constructor 
@@ -78,36 +85,37 @@ class QueryBuilder extends \yii\db\pgsql\QueryBuilder
     }
 
     /**
-     * Check if type supported 
+     * Checks if type supported 
      * 
      * @param string $type 
      * @access private
      * @return boolean
      */
-    private function validGrantType($type)
+    private function _validGrantType($type)
     {
-        return array_key_exists($type, $this->_grant_types);
+        return array_key_exists($type, $this->_grant_privileges);
     }
 
     /**
-     * Old method 
+     * Checks if privileges is valid
+     * 
+     * @param string $type database object (table, schema, sequence, etc)
+     * @param string $privileges privilege list separated by commas (ex. 'select,insert,update')
+     * @access private
+     * @return boolean
      */
-    /*public function grantOnSchema($name, $role)
+    private function _validGrantPrivileges($type, $privileges)
     {
-        $sql = 'GRANT ALL PRIVILEGES ON SCHEMA ' . $this->db->quoteTableName($name)
-             . ' TO GROUP ' . $role;
-        return $sql;
-    }*/
-    
-    /**
-     * Old method 
-     */
-    /*public function revokeOnSchema($name, $role)
-    {
-        $sql = 'REVOKE ALL PRIVILEGES ON SCHEMA ' . $this->db->quoteTableName($name)
-             . ' FROM GROUP ' . $role;
-        return $sql;
-    }*/
+        $priv_arr = explode(',', $privileges);
+        foreach ($priv_arr as $priv) {
+            $priv = trim($priv);
+            if (!in_array($priv, $this->_grant_privileges[$type], true)) {
+                $this->_failed_privilege = $priv;
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * Creates a SQL command for dropping DB schema 
@@ -117,13 +125,23 @@ class QueryBuilder extends \yii\db\pgsql\QueryBuilder
      * @access public
      * @return string the SQL statement for dropping DB schema
      */
-    public function grant($target_name, $role, $target_type = 'table')
+    public function grant($target_name, $role, $target_type = 'table', $privileges = 'all')
     {
-        $target_type = strtolower($target_type);
-        if (false === $this->validGrantType($target_type)) {
-            throw new InvalidParamException('Unsupported GRANT type');
+        $target_type = strtoupper($target_type);
+        $privileges  = strtoupper($privileges);
+        if (false === $this->_validGrantType($target_type)) {
+            throw new InvalidParamException("\nUnsupported GRANT type");
         }
-        $sql = 'GRANT ALL PRIVILEGES ON ' . $this->_grant_types[$target_type]['sql']
+        if ($privileges === 'ALL') {
+            $sub = 'ALL PRIVILEGES';
+        } else {
+            if (false === $this->_validGrantPrivileges($target_type, $privileges)) {
+                throw new InvalidParamException("\nPrivilege '{$this->_failed_privilege}' not supported for "
+                    . strtolower($target_type));
+            }
+            $sub = $privileges;
+        }
+        $sql = 'GRANT ' . $sub . ' ON ' . $target_type
              . ' ' . $this->db->quoteTableName($target_name)
              . ' TO GROUP ' . $role;
         return $sql;
@@ -138,13 +156,23 @@ class QueryBuilder extends \yii\db\pgsql\QueryBuilder
      * @access public
      * @return string the SQL statement for dropping DB schema
      */
-    public function revoke($target_name, $role, $target_type = 'table')
+    public function revoke($target_name, $role, $target_type = 'table', $privileges = 'all')
     {
-        $target_type = strtolower($target_type);
-        if (false === $this->validGrantType($target_type)) {
-            throw new InvalidParamException('Unsupported GRANT type');
+        $target_type = strtoupper($target_type);
+        $privileges  = strtoupper($privileges);
+        if (false === $this->_validGrantType($target_type)) {
+            throw new InvalidParamException("\nUnsupported REVOKE type");
         }
-        $sql = 'REVOKE ALL PRIVILEGES ON ' . $this->_grant_types[$target_type]['sql']
+        if ($privileges === 'ALL') {
+            $sub = 'ALL PRIVILEGES';
+        } else {
+            if (false === $this->_validGrantPrivileges($target_type, $privileges)) {
+                throw new InvalidParamException("\nPrivilege '{$this->_failed_privilege}' "
+                    . "not supported for " . strtolower($target_type));
+            }
+            $sub = $privileges;
+        }
+        $sql = 'REVOKE ' . $sub . ' ON ' . $target_type
              . ' ' . $this->db->quoteTableName($target_name)
              . ' FROM GROUP ' . $role;
         return $sql;

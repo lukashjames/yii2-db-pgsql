@@ -65,12 +65,13 @@ class Command extends \yii\db\Command
      * @param string $target_name name of the target (table, schema, sequence, etc)
      * @param string $role existing role in DB
      * @param string $target_type type of the target (table, schema, sequence, etc)
+     * @param string $privileges list of privileges separated by commas (ex. 'select,update,delete')
      * @access public
      * @return $this the command object itself
      */
-    public function grant($target_name, $role, $target_type = 'table')
+    public function grant($target_name, $role, $target_type = 'table', $privileges = 'all')
     {
-        $sql = $this->db->getQueryBuilder()->grant($target_name, $role, $target_type);
+        $sql = $this->db->getQueryBuilder()->grant($target_name, $role, $target_type, $privileges);
         return $this->setSql($sql);
     }
     
@@ -80,12 +81,13 @@ class Command extends \yii\db\Command
      * @param string $target_name name of the target (table, schema, sequence, etc)
      * @param string $role existing role in DB
      * @param string $target_type type of the target (table, schema, sequence, etc)
+     * @param string $privileges list of privileges separated by commas (ex. 'select,update,delete')
      * @access public
      * @return $this the command object itself
      */
-    public function revoke($target_name, $role, $target_type = 'table')
+    public function revoke($target_name, $role, $target_type = 'table', $privileges = 'all')
     {
-        $sql = $this->db->getQueryBuilder()->revoke($target_name, $role, $target_type);
+        $sql = $this->db->getQueryBuilder()->revoke($target_name, $role, $target_type, $privileges);
         return $this->setSql($sql);
     }
 }
