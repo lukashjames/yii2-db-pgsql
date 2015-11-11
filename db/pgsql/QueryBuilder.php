@@ -85,21 +85,30 @@ class QueryBuilder extends \yii\db\pgsql\QueryBuilder
     }
 
     /**
-     * Check if type supported 
+     * Checks if type supported 
      * 
      * @param string $type 
      * @access private
      * @return boolean
      */
-    private function validGrantType($type)
+    private function _validGrantType($type)
     {
         return array_key_exists($type, $this->_grant_privileges);
     }
 
-    private function validGrantPrivileges($type, $privileges)
+    /**
+     * Checks if privileges is valid
+     * 
+     * @param string $type database object (table, schema, sequence, etc)
+     * @param string $privileges privilege list separated by commas (ex. 'select,insert,update')
+     * @access private
+     * @return boolean
+     */
+    private function _validGrantPrivileges($type, $privileges)
     {
         $priv_arr = explode(',', $privileges);
         foreach ($priv_arr as $priv) {
+            $priv = trim($priv);
             if (!in_array($priv, $this->_grant_privileges[$type], true)) {
                 $this->_failed_privilege = $priv;
                 return false;
@@ -120,13 +129,13 @@ class QueryBuilder extends \yii\db\pgsql\QueryBuilder
     {
         $target_type = strtoupper($target_type);
         $privileges  = strtoupper($privileges);
-        if (false === $this->validGrantType($target_type)) {
+        if (false === $this->_validGrantType($target_type)) {
             throw new InvalidParamException("\nUnsupported GRANT type");
         }
         if ($privileges === 'ALL') {
             $sub = 'ALL PRIVILEGES';
         } else {
-            if (false === $this->validGrantPrivileges($target_type, $privileges)) {
+            if (false === $this->_validGrantPrivileges($target_type, $privileges)) {
                 throw new InvalidParamException("\nPrivilege '{$this->_failed_privilege}' not supported for "
                     . strtolower($target_type));
             }
@@ -151,13 +160,13 @@ class QueryBuilder extends \yii\db\pgsql\QueryBuilder
     {
         $target_type = strtoupper($target_type);
         $privileges  = strtoupper($privileges);
-        if (false === $this->validGrantType($target_type)) {
+        if (false === $this->_validGrantType($target_type)) {
             throw new InvalidParamException("\nUnsupported REVOKE type");
         }
         if ($privileges === 'ALL') {
             $sub = 'ALL PRIVILEGES';
         } else {
-            if (false === $this->validGrantPrivileges($target_type, $privileges)) {
+            if (false === $this->_validGrantPrivileges($target_type, $privileges)) {
                 throw new InvalidParamException("\nPrivilege '{$this->_failed_privilege}' "
                     . "not supported for " . strtolower($target_type));
             }
