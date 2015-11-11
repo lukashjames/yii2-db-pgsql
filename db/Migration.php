@@ -89,17 +89,18 @@ class Migration extends \yii\db\Migration
      * @param string $target_name name of the target (table, schema, sequence, etc)
      * @param string $role existing role in DB
      * @param string $target_type type of the target (table, schema, sequence, etc)
+     * @param string $privileges list of privileges separated by commas (ex. 'select,update,delete')
      * @access public
      * @return void
      */
-    public function grant($target_name, $role, $target_type = 'table')
+    public function grant($target_name, $role, $target_type = 'table', $privileges = 'all')
     {
         //var_dump(get_class($this->db->createCommand()));die('MigCreSch');
-        $text = "    > grant on $target_type $target_name to $role";
+        $text = "    > grant $privileges on $target_type $target_name to $role";
         echo $text;
         $time = microtime(true);
         //var_dump(get_class($this->db/*->createCommand()*/));die('MigCreSch');
-        $this->db->createCommand()->grant($target_name, $role, $target_type)->execute();
+        $this->db->createCommand()->grant($target_name, $role, $target_type, $privileges)->execute();
         echo " done (time: " . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
     
@@ -109,17 +110,18 @@ class Migration extends \yii\db\Migration
      * @param string $target_name name of the target (table, schema, sequence, etc)
      * @param string $role existing role in DB
      * @param string $target_type type of the target (table, schema, sequence, etc)
+     * @param string $privileges list of privileges separated by commas (ex. 'select,update,delete')
      * @access public
      * @return void
      */
-    public function revoke($target_name, $role, $target_type = 'table')
+    public function revoke($target_name, $role, $target_type = 'table', $privileges = 'all')
     {
         //var_dump(get_class($this->db->createCommand()));die('MigCreSch');
-        $text = "    > revoke on $target_type $target_name from $role";
+        $text = "    > revoke $privileges on $target_type $target_name from $role";
         echo $text;
         $time = microtime(true);
         //var_dump(get_class($this->db/*->createCommand()*/));die('MigCreSch');
-        $this->db->createCommand()->revoke($target_name, $role, $target_type)->execute();
+        $this->db->createCommand()->revoke($target_name, $role, $target_type, $privileges)->execute();
         echo " done (time: " . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 }

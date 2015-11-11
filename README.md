@@ -162,10 +162,12 @@ DROP SCHEMA IF EXISTS new_schema CASCADE
 **grant()**
 
 ```php
-public function grant($target_name, $role, $target_type = 'table')
+public function grant($target_name, $role, $target_type = 'table', $privileges = 'all')
 ```
 
-Give all privileges on database object (schema, table, sequence, etc) to existing role.
+Give privileges on database object (schema, table, sequence, etc) to existing role.
+
+Default target is table. Default privileges are 'all' (ALL PRIVILEGES)
 
 *Example 1*
 
@@ -182,22 +184,35 @@ GRANT ALL PRIVILEGES ON TABLE some_table TO stat1
 *Example 2*
 
 ```php
-$this->grant('some_schema', 'stat1', 'schema');
+$this->grant('some_schema', 'stat1', 'schema', 'usage');
 ```
     
 Generates SQL statement
 
 ```sql
-GRANT ALL PRIVILEGES ON SCHEMA some_schema TO stat1
+GRANT USAGE ON SCHEMA some_schema TO stat1
+```
+
+*Example 3*
+```php
+$this->grant('some_table_id_seq', 'stat1', 'sequence', 'usage,update');
+```
+
+Generates SQL statement
+
+```sql
+GRANT USAGE,UPDATE ON SEQUENCE some_table_id_seq TO stat1
 ```
 
 **revoke()**
 
 ```php
-public function revoke($target_name, $role, $target_type = 'table')
+public function revoke($target_name, $role, $target_type = 'table', $privileges)
 ```
 
 Remove all privileges on database object (schema, table, sequence, etc) from existing role.
+
+Default target is table. Default privileges are 'all' (ALL PRIVILEGES)
 
 *Example 1*
 
@@ -214,15 +229,37 @@ REVOKE ALL PRIVILEGES ON TABLE some_table FROM stat1
 *Example 2*
 
 ```php
-$this->revoke('some_schema', 'stat1', 'schema');
+$this->revoke('some_schema', 'stat1', 'schema', 'usage');
 ```
     
 Generates SQL statement
 
 ```sql
-REVOKE ALL PRIVILEGES ON SCHEMA some_schema FROM stat1
+REVOKE USAGE ON SCHEMA some_schema FROM stat1
 ```
     
+*Example 3*
+```php
+$this->revoke('some_table_id_seq', 'stat1', 'sequence', 'usage,update');
+```
+
+Generates SQL statement
+
+```sql
+REVOKE USAGE,UPDATE ON SEQUENCE some_table_id_seq FROM stat1
+```
+
+Supported privileges
+--------------------
+
+* Tables: select, update, insert, delete
+* Schemas: create, usage
+* Sequences: usage, select, update
+* Functions: execute
+* Languages: usage
+* Tablespaces: create
+* Types: usage
+
 TODO
 ----
 
